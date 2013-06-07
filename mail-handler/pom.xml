@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ru.ventra.jira.plugins</groupId>
   <artifactId>mail-handler</artifactId>
-  <version>1.0</version>
+  <version>1.1-SNAPSHOT</version>
 
   <organization>
     <name>Ventra Employment</name>
