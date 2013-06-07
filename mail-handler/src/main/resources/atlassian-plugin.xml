@@ -4,8 +4,6 @@
     <description>${project.description}</description>
     <version>${project.version}</version>
     <vendor name="${project.organization.name}" url="${project.organization.url}" />
-    <param name="plugin-icon">images/pluginIcon.png</param>
-    <param name="plugin-logo">images/pluginLogo.png</param>
   </plugin-info>
 
   <!-- add our i18n resource -->
@@ -16,11 +14,6 @@
   <web-resource key="mail-handler-resources" name="mail-handler Web Resources">
     <dependency>com.atlassian.auiplugin:ajs</dependency>
     <dependency>jira.webresources:jira-global</dependency>
-
-    <resource type="download" name="mail-handler.css" location="/css/mail-handler.css" />
-    <resource type="download" name="mail-handler.js" location="/js/mail-handler.js" />
-    <resource type="download" name="images/" location="/images" />
-
     <context>mail-handler</context>
   </web-resource>
 
