@@ -17,6 +17,30 @@
   <description>This plugin is add mail handler for adding original email address to auto-created/auto-commented issue description.</description>
   <packaging>atlassian-plugin</packaging>
 
+  <distributionManagement>
+    <repository>
+      <id>ru.ventra.ebr.public</id>
+      <url>https://ebr.ventra.ru/public</url>
+    </repository>
+  </distributionManagement>
+  
+  <properties>
+    <jira.version>6.0.1</jira.version>
+    <atlassian.mail.version>2.1</atlassian.mail.version>
+    <javax.mail.version>1.4.4</javax.mail.version>
+    <junit.version>4.10</junit.version>
+    <javax.ws.rs.version>1.1.1</javax.ws.rs.version>
+    <gson.version>2.2.2-atlassian-1</gson.version>
+    <maven-release-plugin>2.2.1</maven-release-plugin>
+    <amps.version>4.2.0</amps.version>
+    <plugin.testrunner.version>1.1.1</plugin.testrunner.version>
+    <testkit.version>5.2.26</testkit.version>
+  </properties>
+
+  <scm>
+    <connection>scm:git:git@github.com:Ventra/jira-plugins.git</connection>
+  </scm>
+
   <dependencies>
     <dependency>
       <groupId>com.atlassian.jira</groupId>
@@ -154,6 +178,11 @@
             </lifecycleMappingMetadata>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven-release-plugin}</version>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
@@ -210,21 +239,4 @@
       </releases>
     </pluginRepository>
   </pluginRepositories>
-
-
-  <properties>
-    <jira.version>6.0.1</jira.version>
-    <atlassian.mail.version>2.1</atlassian.mail.version>
-    <javax.mail.version>1.4.4</javax.mail.version>
-    <junit.version>4.10</junit.version>
-    <javax.ws.rs.version>1.1.1</javax.ws.rs.version>
-    <gson.version>2.2.2-atlassian-1</gson.version>
-    <amps.version>4.2.0</amps.version>
-    <plugin.testrunner.version>1.1.1</plugin.testrunner.version>
-    <testkit.version>5.2.26</testkit.version>
-  </properties>
-
-  <scm>
-    <connection>scm:git:git@github.com:Ventra/jira-plugins.git</connection>
-  </scm>
 </project>
