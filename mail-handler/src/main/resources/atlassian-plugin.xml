@@ -1,0 +1,53 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}"
+  name="${project.name}" plugins-version="2">
+  <plugin-info>
+    <description>${project.description}</description>
+    <version>${project.version}</version>
+    <vendor name="${project.organization.name}" url="${project.organization.url}" />
+    <param name="plugin-icon">images/pluginIcon.png</param>
+    <param name="plugin-logo">images/pluginLogo.png</param>
+  </plugin-info>
+
+  <!-- add our i18n resource -->
+  <resource type="i18n" name="i18n"
+    location="ru.ventra.jira.plugins.mailaddresshandler.messages" />
+
+  <!-- add our web resources -->
+  <web-resource key="mail-handler-resources" name="mail-handler Web Resources">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <dependency>jira.webresources:jira-global</dependency>
+
+    <resource type="download" name="mail-handler.css" location="/css/mail-handler.css" />
+    <resource type="download" name="mail-handler.js" location="/js/mail-handler.js" />
+    <resource type="download" name="images/" location="/images" />
+
+    <context>mail-handler</context>
+  </web-resource>
+
+  <!-- publish our component -->
+  <component key="myPluginComponent"
+    class="ru.ventra.jira.plugins.MyPluginComponentImpl" public="true">
+    <interface>ru.ventra.jira.plugins.MyPluginComponent</interface>
+  </component>
+
+  <!-- import from the product container -->
+  <component-import key="applicationProperties"
+    interface="com.atlassian.sal.api.ApplicationProperties" />
+
+  <webwork1 key="actions" name="Actions" class="java.lang.Object">
+    <actions>
+      <action
+        name="com.atlassian.jira.plugins.mail.webwork.EditHandlerDetailsWebAction"
+        alias="EditAddressHandlerDetails" roles-required="admin">
+        <view name="input">/view/editMailAddressHandlerDetails.vm</view>
+        <view name="securitybreach">/secure/views/securitybreach.jsp</view>
+      </action>
+    </actions>
+  </webwork1>
+
+  <message-handler i18n-name-key="mailaddresshandler.name"
+    key="mailAddressHandler" class="ru.ventra.jira.plugins.mailaddresshandler.MailAddressHandler"
+    add-edit-url="/secure/admin/EditAddressHandlerDetails!default.jspa"
+    weight="0" />
+
+</atlassian-plugin>

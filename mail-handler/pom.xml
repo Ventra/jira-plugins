@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ru.ventra.jira.plugins</groupId>
+  <artifactId>mail-handler</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <organization>
+    <name>Example Company</name>
+    <url>http://www.example.com/</url>
+  </organization>
+
+  <name>mail-handler</name>
+  <description>This plugin is add mail handler for adding original email address to auto-created issue description.</description>
+  <packaging>atlassian-plugin</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.atlassian.jira</groupId>
+      <artifactId>jira-api</artifactId>
+      <version>${jira.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Add dependency on jira-core if you want access to JIRA implementation 
+      classes as well as the sanctioned API. -->
+    <!-- This is not normally recommended, but may be required eg when migrating 
+      a plugin originally developed against JIRA 4.x -->
+    <!-- <dependency> <groupId>com.atlassian.jira</groupId> <artifactId>jira-core</artifactId> 
+      <version>${jira.version}</version> <scope>provided</scope> </dependency> -->
+    <dependency>
+      <groupId>com.atlassian.jira</groupId>
+      <artifactId>jira-core</artifactId>
+      <version>${jira.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jndi</artifactId>
+          <groupId>jndi</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.atlassian.jira</groupId>
+      <artifactId>jira-mail-plugin</artifactId>
+      <version>${jira.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.atlassian.mail</groupId>
+      <artifactId>atlassian-mail</artifactId>
+      <version>2.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4.4</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- dependency>
+      <groupId>javax.naming</groupId>
+      <artifactId>jndi</artifactId>
+      <version>1.2.1</version>
+    </dependency-->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- WIRED TEST RUNNER DEPENDENCIES -->
+    <dependency>
+      <groupId>com.atlassian.plugins</groupId>
+      <artifactId>atlassian-plugins-osgi-testrunner</artifactId>
+      <version>${plugin.testrunner.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>jsr311-api</artifactId>
+      <version>1.1.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.2.2-atlassian-1</version>
+    </dependency>
+
+    <!-- Uncomment to use TestKit in your project. Details at https://bitbucket.org/atlassian/jira-testkit -->
+    <!-- You can read more about TestKit at https://developer.atlassian.com/display/JIRADEV/Plugin+Tutorial+-+Smarter+integration+testing+with+TestKit -->
+    <!-- <dependency> <groupId>com.atlassian.jira.tests</groupId> <artifactId>jira-testkit-client</artifactId> 
+      <version>${testkit.version}</version> <scope>test</scope> </dependency> -->
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.atlassian.maven.plugins</groupId>
+        <artifactId>maven-jira-plugin</artifactId>
+        <version>${amps.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <productVersion>${jira.version}</productVersion>
+          <productDataVersion>${jira.version}</productDataVersion>
+          <!-- Uncomment to install TestKit backdoor in JIRA. -->
+          <!-- <pluginArtifacts> <pluginArtifact> <groupId>com.atlassian.jira.tests</groupId> 
+            <artifactId>jira-testkit-plugin</artifactId> <version>${testkit.version}</version> 
+            </pluginArtifact> </pluginArtifacts> -->
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings 
+          only. It has no influence on the Maven build itself. -->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>
+                      com.atlassian.maven.plugins
+                    </groupId>
+                    <artifactId>
+                      maven-jira-plugin
+                    </artifactId>
+                    <versionRange>
+                      [4.2.0,)
+                    </versionRange>
+                    <goals>
+                      <goal>
+                        copy-test-bundled-dependencies
+                      </goal>
+                      <goal>
+                        generate-test-manifest
+                      </goal>
+                      <goal>
+                        filter-test-plugin-descriptor
+                      </goal>
+                      <goal>
+                        generate-manifest
+                      </goal>
+                      <goal>
+                        copy-bundled-dependencies
+                      </goal>
+                      <goal>
+                        generate-rest-docs
+                      </goal>
+                      <goal>
+                        filter-plugin-descriptor
+                      </goal>
+                      <goal>
+                        compress-resources
+                      </goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>ru.ventra.ebr.public</id>
+      <name>Ventra Enterprise Bundle Repository - Public Releases</name>
+      <url>https://ebr.ventra.ru/public</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+    <repository>
+      <id>ru.ventra.ebr.external</id>
+      <name>Ventra Enterprise Bundle Repository - External Releases</name>
+      <url>https://ebr.ventra.ru/external</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+    <repository>
+      <id>atlassian-public</id>
+      <url>https://m2proxy.atlassian.com/repository/public</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>atlassian-public</id>
+      <url>https://m2proxy.atlassian.com/repository/public</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
+
+
+  <properties>
+    <jira.version>6.0.1</jira.version>
+    <amps.version>4.2.0</amps.version>
+    <plugin.testrunner.version>1.1.1</plugin.testrunner.version>
+    <!-- TestKit version 5.x for JIRA 5.x, 6.x for JIRA 6.x -->
+    <testkit.version>5.2.26</testkit.version>
+  </properties>
+
+</project>
